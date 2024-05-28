@@ -130,7 +130,7 @@ CIL_CLI_VER=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/s
 curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CIL_CLI_VER}/cilium-linux-${arch}.tar.gz{,.sha256sum}
 sha256sum --check cilium-linux-${arch}.tar.gz.sha256sum
 sudo tar xzvfC cilium-linux-${arch}.tar.gz /usr/local/bin
-rm cilium-linux-${arch}.tar.gz{,.sha256sum}
+rm cilium-linux-${arch}.tar.gz
 
 # Remove the taints
 
