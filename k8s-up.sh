@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -14,9 +14,9 @@ CIL_VER="1.15.5"
 
 arch=$(uname -m)
 
-if [[ "$arch" == "x86_64" ]]; then
+if [ "$arch" = "x86_64" ]; then
   arch="amd64"
-elif [[ "$arch" == "aarch64" ]]; then
+elif [ "$arch" = "aarch64" ]; then
   arch="arm64"
 fi
 
