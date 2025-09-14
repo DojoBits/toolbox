@@ -128,7 +128,7 @@ fi
 # ---- Install containerd (Docker upstream version) ---------------------------
 log "Installing containerd..."
 apt-get update
-apt-get install -y containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 
 # ---- Enable Systemd cgroup driver -------------------------------------------
@@ -204,16 +204,26 @@ if [[ -n "${SUDO_USER:-}" && "$SUDO_USER" != "root" ]]; then
     KUBE_CONF_DIR="${USER_HOME}/.kube"
     log "Setting up kubectl config for the $SUDO_USER user..."
     mkdir -p "${KUBE_CONF_DIR}"
-    cp -i /etc/kubernetes/admin.conf "${KUBE_CONF_DIR}/config"
-    chown "$SUDO_USER:$SUDO_USER" "${KUBE_CONF_DIR}/config"
-    chmod 600 "${KUBE_CONF_DIR}/config"
+    if [[ ! -f "${KUBE_CONF_DIR}/config" ]]; then
+        cp /etc/kubernetes/admin.conf "${KUBE_CONF_DIR}/config"
+        chown "$SUDO_USER:$SUDO_USER" "${KUBE_CONF_DIR}/config"
+        chmod 600 "${KUBE_CONF_DIR}/config"
+        log "kubectl config created for $SUDO_USER user."
+    else
+        log "kubectl config already present for $SUDO_USER user, skipping copy."
+    fi
 else
     KUBE_CONF_DIR="${HOME}/.kube"
     log "Setting up kubectl config for the $(whoami) user..."
     mkdir -p "${KUBE_CONF_DIR}"
-    cp -i /etc/kubernetes/admin.conf "${KUBE_CONF_DIR}/config"
-    chown "$(id -u):$(id -g)" "${KUBE_CONF_DIR}/config"
-    chmod 600 "${KUBE_CONF_DIR}/config"
+    if [[ ! -f "${KUBE_CONF_DIR}/config" ]]; then
+        cp /etc/kubernetes/admin.conf "${KUBE_CONF_DIR}/config"
+        chown "$(id -u):$(id -g)" "${KUBE_CONF_DIR}/config"
+        chmod 600 "${KUBE_CONF_DIR}/config"
+        log "kubectl config created for $(id -u) user."
+    else
+        log "kubectl config already present for $(id -u) user, skipping copy."
+    fi
 fi
 
 
