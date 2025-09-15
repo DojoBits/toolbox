@@ -66,7 +66,7 @@ if [ ! -f "$DB_FILE" ]; then
       -F "admin_name=${ADMIN_USER}" \
       -F "admin_passwd=${ADMIN_PASS}" \
       -F "admin_confirm_passwd=${ADMIN_PASS}" \
-      -F "admin_email=${ADMIN_EMAIL}"
+      -F "admin_email=${ADMIN_EMAIL}" > /dev/null 2>&1
 fi
 
 
