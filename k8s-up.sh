@@ -5,7 +5,7 @@
 #  Tested on Ubuntu 24.04 LTS (apt‑based)
 #===============================================================================
 
-set -euo pipefail
+set -eEuo pipefail
 IFS=$'\n\t'
 
 
