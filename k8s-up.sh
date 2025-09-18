@@ -212,19 +212,20 @@ if [[ -n "${SUDO_USER:-}" && "$SUDO_USER" != "root" ]]; then
     else
         log "kubectl config already present for $SUDO_USER user, skipping copy."
     fi
+ fi
+ 
+KUBE_CONF_DIR="${HOME}/.kube"
+log "Setting up kubectl config for the $(whoami) user..."
+mkdir -p "${KUBE_CONF_DIR}"
+if [[ ! -f "${KUBE_CONF_DIR}/config" ]]; then
+    cp /etc/kubernetes/admin.conf "${KUBE_CONF_DIR}/config"
+    chown "$(id -u):$(id -g)" "${KUBE_CONF_DIR}/config"
+    chmod 600 "${KUBE_CONF_DIR}/config"
+    log "kubectl config created for $(id -u) user."
 else
-    KUBE_CONF_DIR="${HOME}/.kube"
-    log "Setting up kubectl config for the $(whoami) user..."
-    mkdir -p "${KUBE_CONF_DIR}"
-    if [[ ! -f "${KUBE_CONF_DIR}/config" ]]; then
-        cp /etc/kubernetes/admin.conf "${KUBE_CONF_DIR}/config"
-        chown "$(id -u):$(id -g)" "${KUBE_CONF_DIR}/config"
-        chmod 600 "${KUBE_CONF_DIR}/config"
-        log "kubectl config created for $(id -u) user."
-    else
-        log "kubectl config already present for $(id -u) user, skipping copy."
-    fi
+    log "kubectl config already present for $(id -u) user, skipping copy."
 fi
+
 
 
 # ---- Install crictl -----------------------------------------------------
