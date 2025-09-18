@@ -26,7 +26,6 @@ services:
       - "2222:22"
     volumes:
       - ./data:/data
-      - ./conf:/data/gogs/conf
 EOF
 
 # ------------------- Bring the compose up -------------------------------
